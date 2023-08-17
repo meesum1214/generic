@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 export default ({ setLocation }) => {
     const [searchText, setSearchText] = useState("")
     const [locations, setLocations] = useState([])
+    const [isVisible, setIsVisible] = useState(false);
 
     const onSearch = () => {
 
@@ -38,6 +39,12 @@ export default ({ setLocation }) => {
                 <div className="relative w-full">
 
                     <TextInput
+                        onFocus={() => {
+                            setIsVisible(true)
+                        }}
+                        onBlurCapture={() => {
+                            setIsVisible(false)
+                        }}
                         className="w-full"
                         placeholder="Search"
                         value={searchText}
@@ -59,7 +66,7 @@ export default ({ setLocation }) => {
                 <button className="bg-blue-500 w-24 h-9 text-white rounded-md active:scale-95 hover:bg-blue-600" onClick={onSearch}>Search</button>
             </div>
 
-            {locations.length > 0 && <List
+            {locations.length > 0 && isVisible && <List
                 center
                 className="mt-2 bg-white shadow-md rounded-md p-2 w-96"
                 icon={<HiLocationMarker className="text-red-500" size={25} />}
