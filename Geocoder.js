@@ -27,7 +27,7 @@ export default ({ setLocation }) => {
         fetch(url, requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 setLocations(result)
             })
             .catch(error => console.log('error', error));
@@ -35,35 +35,33 @@ export default ({ setLocation }) => {
 
     return (
         <div className="z-[10000] absolute right-[40%] top-5">
-            <div className="flex gap-2 w-96">
-                <div className="relative w-full">
+            <div className="relative w-96">
 
-                    <TextInput
-                        onFocus={() => {
-                            setIsVisible(true)
-                        }}
-                        onBlurCapture={() => {
+                <TextInput
+                    onFocus={() => {
+                        setIsVisible(true)
+                    }}
+                    onBlurCapture={() => {
+                        setTimeout(() => {
                             setIsVisible(false)
-                        }}
-                        className="w-full"
-                        placeholder="Search"
-                        value={searchText}
-                        onChange={(e) => {
-                            setSearchText(e.currentTarget.value)
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                onSearch()
-                            }
-                        }}
-                    />
-                    {searchText !== "" && <IoClose size={20} className="text-gray-500 cursor-pointer absolute right-2 top-[20%]" onClick={() => {
-                        setSearchText("")
-                        setLocations([])
-                    }} />}
-                </div>
-
-                <button className="bg-blue-500 w-24 h-9 text-white rounded-md active:scale-95 hover:bg-blue-600" onClick={onSearch}>Search</button>
+                        }, 200)
+                    }}
+                    className="w-full"
+                    placeholder="Search"
+                    value={searchText}
+                    onChange={(e) => {
+                        setSearchText(e.currentTarget.value)
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            onSearch()
+                        }
+                    }}
+                />
+                {searchText !== "" && <IoClose size={20} className="text-gray-500 cursor-pointer absolute right-2 top-[20%]" onClick={() => {
+                    setSearchText("")
+                    setLocations([])
+                }} />}
             </div>
 
             {locations.length > 0 && isVisible && <List
@@ -78,7 +76,7 @@ export default ({ setLocation }) => {
                                 onClick={() => {
                                     setLocation({
                                         coordinates: [location.lat, location.lon],
-                                        zoomLevel: 15
+                                        zoomLevel: location.place_rank
                                     })
                                 }}
                             >{location.display_name}</List.Item>
